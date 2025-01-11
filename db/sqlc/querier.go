@@ -6,18 +6,34 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Querier interface {
+	CreateCustomer(ctx context.Context, arg CreateCustomerParams) (Customer, error)
 	CreateMeal(ctx context.Context, arg CreateMealParams) (Meal, error)
+	CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error)
+	CreateOrderDetail(ctx context.Context, arg CreateOrderDetailParams) (Orderdetail, error)
+	DeleteCustomer(ctx context.Context, customerid int32) error
 	DeleteMeal(ctx context.Context, mealid int32) error
+	DeleteOrder(ctx context.Context, orderid int32) error
+	DeleteOrderDetail(ctx context.Context, orderdetailid int32) error
+	GetCustomer(ctx context.Context, customerid int32) (Customer, error)
+	GetCustomerByEmail(ctx context.Context, email string) (Customer, error)
 	GetMeal(ctx context.Context, mealid int32) (Meal, error)
 	GetMealForUpdate(ctx context.Context, mealid int32) (Meal, error)
-	GetMealsByCategory(ctx context.Context, category pgtype.Text) ([]Meal, error)
+	GetMealsByCategory(ctx context.Context, category string) ([]Meal, error)
+	GetOrder(ctx context.Context, orderid int32) (Order, error)
+	GetOrderDetail(ctx context.Context, orderdetailid int32) (Orderdetail, error)
+	ListCustomers(ctx context.Context) ([]Customer, error)
 	ListMeals(ctx context.Context) ([]Meal, error)
+	ListOrderDetails(ctx context.Context) ([]Orderdetail, error)
+	ListOrderDetailsByOrder(ctx context.Context, orderid int32) ([]Orderdetail, error)
+	ListOrders(ctx context.Context) ([]Order, error)
+	ListOrdersByCustomer(ctx context.Context, customerid int32) ([]Order, error)
+	UpdateCustomer(ctx context.Context, arg UpdateCustomerParams) (Customer, error)
 	UpdateMeal(ctx context.Context, arg UpdateMealParams) (Meal, error)
+	UpdateOrder(ctx context.Context, arg UpdateOrderParams) (Order, error)
+	UpdateOrderDetail(ctx context.Context, arg UpdateOrderDetailParams) (Orderdetail, error)
 }
 
 var _ Querier = (*Queries)(nil)

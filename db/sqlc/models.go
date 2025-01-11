@@ -11,32 +11,33 @@ import (
 )
 
 type Customer struct {
-	Customerid  int32       `json:"customerid"`
-	Email       string      `json:"email"`
-	Name        string      `json:"name"`
-	Street      string      `json:"street"`
-	Postalcode  string      `json:"postalcode"`
-	City        string      `json:"city"`
-	Phonenumber pgtype.Text `json:"phonenumber"`
-	CreatedAt   time.Time   `json:"created_at"`
+	Customerid  int32     `json:"customerid"`
+	Email       string    `json:"email"`
+	Name        string    `json:"name"`
+	Street      string    `json:"street"`
+	Postalcode  string    `json:"postalcode"`
+	City        string    `json:"city"`
+	Phonenumber string    `json:"phonenumber"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type Meal struct {
 	Mealid      int32          `json:"mealid"`
 	Name        string         `json:"name"`
-	Description pgtype.Text    `json:"description"`
+	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
-	Category    pgtype.Text    `json:"category"`
+	Category    string         `json:"category"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 }
 
 type Order struct {
-	Orderid     int32            `json:"orderid"`
-	Customerid  int32            `json:"customerid"`
-	Orderdate   pgtype.Timestamp `json:"orderdate"`
-	Totalamount pgtype.Numeric   `json:"totalamount"`
-	CreatedAt   time.Time        `json:"created_at"`
+	Orderid     int32          `json:"orderid"`
+	Customerid  int32          `json:"customerid"`
+	Orderdate   time.Time      `json:"orderdate"`
+	Totalamount pgtype.Numeric `json:"totalamount"`
+	CreatedAt   time.Time      `json:"created_at"`
 }
 
 type Orderdetail struct {

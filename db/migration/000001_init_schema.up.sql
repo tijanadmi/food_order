@@ -1,10 +1,10 @@
 -- Creating the Meals table
 CREATE TABLE Meals (
     MealID SERIAL PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL,
-    Description TEXT,
+    Name VARCHAR(200) NOT NULL,
+    Description VARCHAR(1000) NOT NULL,
     Price NUMERIC(10, 2) NOT NULL,
-    Category VARCHAR(100),
+    Category VARCHAR(100) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT (now()),
 	updated_at timestamptz NOT NULL DEFAULT (now())
 );
@@ -17,15 +17,16 @@ CREATE TABLE Customers (
     Street VARCHAR(200) NOT NULL,
     PostalCode VARCHAR(100) NOT NULL,
     City VARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(15),
-    created_at timestamptz NOT NULL DEFAULT (now())
+    PhoneNumber VARCHAR(15) NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT (now()),
+    updated_at timestamptz NOT NULL DEFAULT (now())
 );
 
 -- Creating the Orders table
 CREATE TABLE Orders (
     OrderID SERIAL PRIMARY KEY,
     CustomerID INT NOT NULL,
-    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    OrderDate timestamptz NOT NULL,
     TotalAmount NUMERIC(10, 2) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT (now()),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)

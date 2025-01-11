@@ -26,9 +26,9 @@ INSERT INTO Meals (
 
 type CreateMealParams struct {
 	Name        string         `json:"name"`
-	Description pgtype.Text    `json:"description"`
+	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
-	Category    pgtype.Text    `json:"category"`
+	Category    string         `json:"category"`
 }
 
 func (q *Queries) CreateMeal(ctx context.Context, arg CreateMealParams) (Meal, error) {
@@ -110,7 +110,7 @@ WHERE Category = $1
 ORDER BY MealID
 `
 
-func (q *Queries) GetMealsByCategory(ctx context.Context, category pgtype.Text) ([]Meal, error) {
+func (q *Queries) GetMealsByCategory(ctx context.Context, category string) ([]Meal, error) {
 	rows, err := q.db.Query(ctx, getMealsByCategory, category)
 	if err != nil {
 		return nil, err
@@ -186,9 +186,9 @@ RETURNING mealid, name, description, price, category, created_at, updated_at
 
 type UpdateMealParams struct {
 	Name        string         `json:"name"`
-	Description pgtype.Text    `json:"description"`
+	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
-	Category    pgtype.Text    `json:"category"`
+	Category    string         `json:"category"`
 	Mealid      int32          `json:"mealid"`
 }
 

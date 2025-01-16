@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"math"
 	"math/big"
 	"math/rand"
 	"strings"
@@ -30,14 +31,21 @@ func RandomNumeric(min, max float64) float64 {
 
 // Float64ToBigInt converts a float64 to a big.Int
 
-func Float64ToBigInt(f float64) *big.Int {
+// func Float64ToBigInt(f float64) *big.Int {
 
-	bigFloat := new(big.Float).SetFloat64(f)
+// 	bigFloat := new(big.Float).SetFloat64(f)
 
-	bigInt, _ := bigFloat.Int(nil)
+// 	bigInt, _ := bigFloat.Int(nil)
 
-	return bigInt
+// 	return bigInt
 
+// }
+func Float64ToBigInt(value float64) *big.Int {
+	// Round to two decimal places before converting to BigInt
+	roundedValue := math.Round(value * 100) // Scale by 100 for two decimal precision
+
+	// Convert the rounded value to an integer and return as BigInt
+	return big.NewInt(int64(roundedValue))
 }
 
 // RandomString generates a random string of length n

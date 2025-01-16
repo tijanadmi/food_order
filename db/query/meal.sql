@@ -3,11 +3,12 @@ INSERT INTO Meals (
     Name,
     Description,
     Price,
+    Image,
     Category,
     created_at,
     updated_at
 ) VALUES (
-    $1, $2, $3, $4, DEFAULT, DEFAULT
+    $1, $2, $3, $4, $5, DEFAULT, DEFAULT
 ) RETURNING *;
 
 -- name: GetMeal :one
@@ -36,10 +37,11 @@ SET
     Name = COALESCE($1, Name),
     Description = COALESCE($2, Description),
     Price = COALESCE($3, Price),
-    Category = COALESCE($4, Category),
+    Image = COALESCE($4, Image),
+    Category = COALESCE($5, Category),
     updated_at = now()
 WHERE
-    MealID = $5
+    MealID = $6
 RETURNING *;
 
 -- name: DeleteMeal :exec

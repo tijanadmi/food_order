@@ -65,15 +65,6 @@ func runGinServer(config util.Config, store db.Store) {
 		log.Fatal().Err(err).Msg("cannot create server")
 	}
 
-	// Configure CORS middleware
-	// corsHandler := cors.New(cors.Options{
-	// 	AllowedOrigins:   []string{"http://localhost:5173"}, // Ovde dozvoli specifične ili sve origne
-	// 	AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-	// 	AllowedHeaders:   []string{"Origin", "Content-Type", "Authorization", "Cookie"},
-	// 	ExposedHeaders:   []string{"Content-Length", "Set-Cookie"},
-	// 	AllowCredentials: true,
-	// }).Handler(mux)
-
 	err = server.Start(config.HTTPServerAddress)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot start server")

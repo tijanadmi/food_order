@@ -27,6 +27,7 @@ type Meal struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
+	Image       string         `json:"image"`
 	Category    string         `json:"category"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`

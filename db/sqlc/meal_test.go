@@ -16,6 +16,7 @@ func createRandomMeal(t *testing.T) Meal {
 		Name:        util.RandomString(20),
 		Description: util.RandomString(200),
 		Price:       pgtype.Numeric{Int: util.Float64ToBigInt(util.RandomNumeric(1, 100)), Exp: -2, Valid: true},
+		Image:       util.RandomString(20),
 		Category:    "Dessert",
 	}
 
@@ -27,6 +28,7 @@ func createRandomMeal(t *testing.T) Meal {
 	require.Equal(t, arg.Description, meal.Description)
 	require.Equal(t, arg.Price.Int, meal.Price.Int)
 	require.Equal(t, arg.Price.Exp, meal.Price.Exp)
+	require.Equal(t, arg.Image, meal.Image)
 	require.Equal(t, arg.Category, meal.Category)
 	require.NotZero(t, meal.CreatedAt)
 
@@ -47,6 +49,7 @@ func TestGetMeal(t *testing.T) {
 	require.Equal(t, meal1.Description, meal2.Description)
 	require.Equal(t, meal1.Price.Int, meal2.Price.Int)
 	require.Equal(t, meal1.Price.Exp, meal2.Price.Exp)
+	require.Equal(t, meal1.Image, meal2.Image)
 	require.Equal(t, meal1.Category, meal2.Category)
 	require.WithinDuration(t, meal1.CreatedAt, meal2.CreatedAt, time.Second)
 }
@@ -64,6 +67,7 @@ func TestUpdateMeal(t *testing.T) {
 		Name:        newName,
 		Description: newDescription,
 		Price:       newPrice,
+		Image:       oldMeal.Image,
 		Category:    newCategory,
 	})
 

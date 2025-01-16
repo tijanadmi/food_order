@@ -8,19 +8,26 @@ import (
 )
 
 type createOrderRequest struct {
-	Items []struct {
-		ID       int     `json:"id"`
-		Name     string  `json:"name"`
-		Price    float64 `json:"price"`
-		Quantity int     `json:"quantity"`
-	} `json:"items" binding:"required"`
-	Customer struct {
-		Name       string `json:"name"`
-		Email      string `json:"email"`
-		Street     string `json:"street"`
-		PostalCode string `json:"postal_code"`
-		City       string `json:"city"`
-	} `json:"customer" binding:"required"`
+	Order struct {
+		Items []struct {
+			MealID      int     `json:"mealid"`
+			Name        string  `json:"name"`
+			Description string  `json:"description"`
+			Price       float64 `json:"price"`
+			Image       string  `json:"image"`
+			Category    string  `json:"category"`
+			CreatedAt   string  `json:"created_at"`
+			UpdatedAt   string  `json:"updated_at"`
+			Quantity    int     `json:"quantity"`
+		} `json:"items" binding:"required"`
+		Customer struct {
+			Name       string `json:"name"`
+			Email      string `json:"email"`
+			Street     string `json:"street"`
+			PostalCode string `json:"postal-code"`
+			City       string `json:"city"`
+		} `json:"customer" binding:"required"`
+	} `json:"order" binding:"required"`
 }
 
 func (server *Server) CreateOrder(ctx *gin.Context) {
@@ -44,7 +51,7 @@ func (server *Server) CreateOrder(ctx *gin.Context) {
 			Name     string  `json:"name"`
 			Price    float64 `json:"price"`
 			Quantity int     `json:"quantity"`
-		}, len(req.Items)),
+		}, len(req.Order.Items)),
 		Customer: struct {
 			Name       string `json:"name"`
 			Email      string `json:"email"`
@@ -52,30 +59,29 @@ func (server *Server) CreateOrder(ctx *gin.Context) {
 			PostalCode string `json:"postal_code"`
 			City       string `json:"city"`
 		}{
-			Name:       req.Customer.Name,
-			Email:      req.Customer.Email,
-			Street:     req.Customer.Street,
-			PostalCode: req.Customer.PostalCode,
-			City:       req.Customer.City,
+			Name:       req.Order.Customer.Name,
+			Email:      req.Order.Customer.Email,
+			Street:     req.Order.Customer.Street,
+			PostalCode: req.Order.Customer.PostalCode,
+			City:       req.Order.Customer.City,
 		},
 	}
 
 	// Kopiranje svake stavke iz req.Items u arg.Items
-	for i, item := range req.Items {
+	for i, item := range req.Order.Items {
 		arg.Items[i] = struct {
 			ID       int     `json:"id"`
 			Name     string  `json:"name"`
 			Price    float64 `json:"price"`
 			Quantity int     `json:"quantity"`
 		}{
-			ID:       item.ID,
+			ID:       item.MealID,
 			Name:     item.Name,
 			Price:    item.Price,
 			Quantity: item.Quantity,
 		}
 	}
 	/****/
-
 	order, err := server.store.OrderTx(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))

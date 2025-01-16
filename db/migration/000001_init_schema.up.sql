@@ -4,6 +4,7 @@ CREATE TABLE Meals (
     Name VARCHAR(200) NOT NULL,
     Description VARCHAR(1000) NOT NULL,
     Price NUMERIC(10, 2) NOT NULL,
+    Image VARCHAR(255) NOT NULL,
     Category VARCHAR(100) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT (now()),
 	updated_at timestamptz NOT NULL DEFAULT (now())

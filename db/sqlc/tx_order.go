@@ -72,10 +72,14 @@ func (store *SQLStore) OrderTx(ctx context.Context, arg OrderTxParams) (Order, e
 				Orderid:  order.Orderid,
 				Mealid:   int32(item.ID),
 				Quantity: int32(item.Quantity),
-				Price:    pgtype.Numeric{Int: util.Float64ToBigInt(item.Price), Exp: -2, Valid: true},
+				Price: pgtype.Numeric{
+					Int:   util.Float64ToBigInt(item.Price),
+					Exp:   -2, // Eksponent ostaje 0
+					Valid: true,
+				},
 			})
 
-			totalamount = util.AddNumeric(totalamount, pgtype.Numeric{Int: util.Float64ToBigInt(item.Price), Exp: -2, Valid: true})
+			totalamount = util.AddNumeric(totalamount, pgtype.Numeric{Int: util.Float64ToBigInt(item.Price * float64(item.Quantity)), Exp: -2, Valid: true})
 
 			if err != nil {
 				return err

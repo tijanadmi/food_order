@@ -16,18 +16,20 @@ INSERT INTO Meals (
     Name,
     Description,
     Price,
+    Image,
     Category,
     created_at,
     updated_at
 ) VALUES (
-    $1, $2, $3, $4, DEFAULT, DEFAULT
-) RETURNING mealid, name, description, price, category, created_at, updated_at
+    $1, $2, $3, $4, $5, DEFAULT, DEFAULT
+) RETURNING mealid, name, description, price, image, category, created_at, updated_at
 `
 
 type CreateMealParams struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
+	Image       string         `json:"image"`
 	Category    string         `json:"category"`
 }
 
@@ -36,6 +38,7 @@ func (q *Queries) CreateMeal(ctx context.Context, arg CreateMealParams) (Meal, e
 		arg.Name,
 		arg.Description,
 		arg.Price,
+		arg.Image,
 		arg.Category,
 	)
 	var i Meal
@@ -44,6 +47,7 @@ func (q *Queries) CreateMeal(ctx context.Context, arg CreateMealParams) (Meal, e
 		&i.Name,
 		&i.Description,
 		&i.Price,
+		&i.Image,
 		&i.Category,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -62,7 +66,7 @@ func (q *Queries) DeleteMeal(ctx context.Context, mealid int32) error {
 }
 
 const getMeal = `-- name: GetMeal :one
-SELECT mealid, name, description, price, category, created_at, updated_at FROM Meals
+SELECT mealid, name, description, price, image, category, created_at, updated_at FROM Meals
 WHERE MealID = $1
 LIMIT 1
 `
@@ -75,6 +79,7 @@ func (q *Queries) GetMeal(ctx context.Context, mealid int32) (Meal, error) {
 		&i.Name,
 		&i.Description,
 		&i.Price,
+		&i.Image,
 		&i.Category,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -83,7 +88,7 @@ func (q *Queries) GetMeal(ctx context.Context, mealid int32) (Meal, error) {
 }
 
 const getMealForUpdate = `-- name: GetMealForUpdate :one
-SELECT mealid, name, description, price, category, created_at, updated_at FROM Meals
+SELECT mealid, name, description, price, image, category, created_at, updated_at FROM Meals
 WHERE MealID = $1
 LIMIT 1
 FOR NO KEY UPDATE
@@ -97,6 +102,7 @@ func (q *Queries) GetMealForUpdate(ctx context.Context, mealid int32) (Meal, err
 		&i.Name,
 		&i.Description,
 		&i.Price,
+		&i.Image,
 		&i.Category,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -105,7 +111,7 @@ func (q *Queries) GetMealForUpdate(ctx context.Context, mealid int32) (Meal, err
 }
 
 const getMealsByCategory = `-- name: GetMealsByCategory :many
-SELECT mealid, name, description, price, category, created_at, updated_at FROM Meals
+SELECT mealid, name, description, price, image, category, created_at, updated_at FROM Meals
 WHERE Category = $1
 ORDER BY MealID
 `
@@ -124,6 +130,7 @@ func (q *Queries) GetMealsByCategory(ctx context.Context, category string) ([]Me
 			&i.Name,
 			&i.Description,
 			&i.Price,
+			&i.Image,
 			&i.Category,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -139,7 +146,7 @@ func (q *Queries) GetMealsByCategory(ctx context.Context, category string) ([]Me
 }
 
 const listMeals = `-- name: ListMeals :many
-SELECT mealid, name, description, price, category, created_at, updated_at FROM Meals
+SELECT mealid, name, description, price, image, category, created_at, updated_at FROM Meals
 ORDER BY MealID
 `
 
@@ -157,6 +164,7 @@ func (q *Queries) ListMeals(ctx context.Context) ([]Meal, error) {
 			&i.Name,
 			&i.Description,
 			&i.Price,
+			&i.Image,
 			&i.Category,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -177,17 +185,19 @@ SET
     Name = COALESCE($1, Name),
     Description = COALESCE($2, Description),
     Price = COALESCE($3, Price),
-    Category = COALESCE($4, Category),
+    Image = COALESCE($4, Image),
+    Category = COALESCE($5, Category),
     updated_at = now()
 WHERE
-    MealID = $5
-RETURNING mealid, name, description, price, category, created_at, updated_at
+    MealID = $6
+RETURNING mealid, name, description, price, image, category, created_at, updated_at
 `
 
 type UpdateMealParams struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description"`
 	Price       pgtype.Numeric `json:"price"`
+	Image       string         `json:"image"`
 	Category    string         `json:"category"`
 	Mealid      int32          `json:"mealid"`
 }
@@ -197,6 +207,7 @@ func (q *Queries) UpdateMeal(ctx context.Context, arg UpdateMealParams) (Meal, e
 		arg.Name,
 		arg.Description,
 		arg.Price,
+		arg.Image,
 		arg.Category,
 		arg.Mealid,
 	)
@@ -206,6 +217,7 @@ func (q *Queries) UpdateMeal(ctx context.Context, arg UpdateMealParams) (Meal, e
 		&i.Name,
 		&i.Description,
 		&i.Price,
+		&i.Image,
 		&i.Category,
 		&i.CreatedAt,
 		&i.UpdatedAt,

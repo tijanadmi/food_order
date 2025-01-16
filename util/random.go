@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -54,4 +56,22 @@ func RandomString(n int) string {
 // RandomEmail generates a random email
 func RandomEmail() string {
 	return fmt.Sprintf("%s@email.com", RandomString(6))
+}
+
+// AddNumeric adds two pgtype.Numeric values and returns the result
+
+func AddNumeric(a, b pgtype.Numeric) pgtype.Numeric {
+
+	result := pgtype.Numeric{}
+
+	// Assuming a and b are valid and have the same scale
+
+	result.Int = new(big.Int).Add(a.Int, b.Int)
+
+	result.Exp = a.Exp
+
+	result.Valid = a.Valid && b.Valid
+
+	return result
+
 }

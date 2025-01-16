@@ -43,6 +43,7 @@ func (server *Server) setupRouter() {
 	router := gin.Default()
 
 	router.GET("/meals", server.listMeals)
+	router.POST("/orders", server.CreateOrder)
 
 	// authRoutes.POST("/transfers", server.createTransfer)
 
